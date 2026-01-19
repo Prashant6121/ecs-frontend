@@ -4,7 +4,7 @@ export default function App() {
       <div style={styles.card}>
         <h1 style={styles.title}>🚀 ECS Frontend Running</h1>
         <p style={styles.subtitle}>
-          Your React application is successfully deployed on
+          It's First React application successfully deployed By Prashant on
         </p>
 
         <div style={styles.badges}>
