@@ -21,7 +21,7 @@ jobs:
 
     - name: Build Docker image
       run: |
-        docker build -t ecs-frontend:${{ env.IMAGE_TAG }} .
+        docker build -t ecs-frontend:${{ env.IMAGE_TAG }} myapp/
 
   test:
     name: Test Frontend Application
@@ -32,10 +32,12 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Install dependencies
+      working-directory: myapp
       run: |
         npm install
 
     - name: Run tests
+      working-directory: myapp
       run: |
         npm test || echo "No tests defined, skipping..."
 
@@ -59,11 +61,11 @@ jobs:
 
     - name: Build, Tag & Push Frontend Docker image
       run: |
-        docker build -t ecs-frontend:${{ env.IMAGE_TAG }} .
+        docker build -t ecs-frontend:${{ env.IMAGE_TAG }} myapp/
         docker tag ecs-frontend:${{ env.IMAGE_TAG }} ${{ env.ECR_REPO }}:${{ env.IMAGE_TAG }}
         docker push ${{ env.ECR_REPO }}:${{ env.IMAGE_TAG }}
 
-    - name: Deploy to ECS
+    - name: Deploy Frontend to ECS
       run: |
         aws ecs update-service \
           --cluster ${{ env.CLUSTER_NAME }} \
